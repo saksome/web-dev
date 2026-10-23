@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List | Workspace</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-slate-dark: #0f172a;
+            --bg-slate-medium: #1e293b;
+            --primary-accent: #2563eb;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg-slate-dark) 0%, var(--bg-slate-medium) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .todo-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--primary-accent);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15);
+        }
+
+        .nav-pills .nav-link {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            padding: 6px 12px;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .todo-item {
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+            border-radius: 8px !important;
+            margin-bottom: 8px;
+        }
+
+        .todo-item:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .todo-item.completed {
+            background-color: #f8fafc;
+            opacity: 0.75;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-accent);
+            border-color: var(--primary-accent);
+        }
+
+        .form-check-input:focus {
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15);
+        }
+
+        .btn-delete {
+            color: #94a3b8;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete:hover {
+            color: #dc3545;
+            background-color: #fee2e2;
+        }
+
+        .todo-list-container {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        /* Custom scrollbar for task list */
+        .todo-list-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        .todo-list-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card todo-card bg-white">
+        <!-- Formal Card Header -->
+        <div class="card-header bg-white border-bottom p-4">
+            <div class="header-subtitle">Workspace Overview</div>
+            <h1 class="h4 fw-bold text-dark mb-0">To-Do List</h1>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body p-4">
+            
+            <!-- Form Input -->
+            <form id="todo-form" class="mb-4">
+                <div class="input-group">
+                    <input type="text" id="todo-input" class="form-control bg-light" placeholder="Add a new task..." autocomplete="off" required>
+                    <button class="btn btn-primary fw-semibold px-4" type="submit">
+                        <i class="bi bi-plus-lg me-1"></i> Add
+                    </button>
+                </div>
+            </form>
+
+            <!-- Bootstrap Nav Pills Filter -->
+            <div class="bg-light p-1 rounded-3 mb-3">
+                <ul class="nav nav-pills nav-fill" id="filter-tabs">
+                    <li class="nav-item">
+                        <button class="nav-link active" data-filter="all">All</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-filter="active">Pending</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-filter="completed">Completed</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Task List Container -->
+            <div class="todo-list-container pe-1">
+                <ul class="list-group list-group-flush" id="todo-list"></ul>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="text-center py-4 text-muted small" style="display: none;">
+                <i class="bi bi-clipboard-check fs-3 d-block mb-2 text-secondary"></i>
+                No action items available.
+            </div>
+
+            <!-- Card Footer Stats -->
+            <div class="d-flex justify-content-between align-items-center pt-3 mt-3 border-top text-secondary small">
+                <span id="task-count">0 items remaining</span>
+                <button id="clear-completed" class="btn btn-link text-decoration-none text-secondary p-0 small" style="display: none;">
+                    Clear Completed
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // DOM Elements
+        const todoForm = document.getElementById('todo-form');
+        const todoInput = document.getElementById('todo-input');
+        const todoList = document.getElementById('todo-list');
+        const emptyState = document.getElementById('empty-state');
+        const taskCount = document.getElementById('task-count');
+        const clearCompletedBtn = document.getElementById('clear-completed');
+        const filterBtns = document.querySelectorAll('#filter-tabs .nav-link');
+
+        // State Management
+        let todos = JSON.parse(localStorage.getItem('bootstrap_formal_todos')) || [];
+        let currentFilter = 'all';
+
+        // Save State
+        function saveToStorage() {
+            localStorage.setItem('bootstrap_formal_todos', JSON.stringify(todos));
+        }
+
+        // Render Function
+        function render() {
+            todoList.innerHTML = '';
+
+            const filteredTodos = todos.filter(todo => {
+                if (currentFilter === 'active') return !todo.completed;
+                if (currentFilter === 'completed') return todo.completed;
+                return true;
+            });
+
+            if (filteredTodos.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+
+            filteredTodos.forEach(todo => {
+                const li = document.createElement('li');
+                li.className = `list-group-item d-flex justify-content-between align-items-center todo-item p-3 ${todo.completed ? 'completed' : ''}`;
+
+                li.innerHTML = `
+                    <div class="form-check d-flex align-items-center mb-0 gap-2 flex-grow-1">
+                        <input class="form-check-input mt-0" type="checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo('${todo.id}')">
+                        <span class="todo-text text-break ms-2">${escapeHTML(todo.text)}</span>
+                    </div>
+                    <button class="btn btn-sm btn-delete border-0 rounded-circle ms-2" onclick="deleteTodo('${todo.id}')" title="Delete Task">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                `;
+
+                todoList.appendChild(li);
+            });
+
+            // Update Counts and Footer
+            const pendingCount = todos.filter(t => !t.completed).length;
+            const completedCount = todos.filter(t => t.completed).length;
+
+            taskCount.textContent = `${pendingCount} ${pendingCount === 1 ? 'task' : 'tasks'} remaining`;
+            clearCompletedBtn.style.display = completedCount > 0 ? 'inline-block' : 'none';
+        }
+
+        // Security Helper
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Add Todo
+        todoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = todoInput.value.trim();
+
+            if (text !== '') {
+                todos.push({
+                    id: Date.now().toString(),
+                    text: text,
+                    completed: false
+                });
+                saveToStorage();
+                render();
+                todoInput.value = '';
+            }
+        });
+
+        // Toggle Status
+        window.toggleTodo = function(id) {
+            todos = todos.map(todo => {
+                if (todo.id === id) return { ...todo, completed: !todo.completed };
+                return todo;
+            });
+            saveToStorage();
+            render();
+        };
+
+        // Delete Todo
+        window.deleteTodo = function(id) {
+            todos = todos.filter(todo => todo.id !== id);
+            saveToStorage();
+            render();
+        };
+
+        // Clear Completed Tasks
+        clearCompletedBtn.addEventListener('click', () => {
+            todos = todos.filter(todo => !todo.completed);
+            saveToStorage();
+            render();
+        });
+
+        // Filter Tabs
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.getAttribute('data-filter');
+                render();
+            });
+        });
+
+        // Initial Load
+        render();
+    </script>
+</body>
+</html>
