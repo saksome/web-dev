@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Saksham Rai's Web Designing Lab experiments in HTML, CSS, JavaScript, Bootstrap, and React.">
+  <meta name="theme-color" content="#29223f">
+  <title>Web Designing Lab | Saksham Rai</title>
+  <style>
+    :root { color-scheme: light; --ink:#29223f; --muted:#716c7d; --accent:#7654d6; --paper:#f7f6fb; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:linear-gradient(160deg,#f3efff 0,#fbfafc 44%,#f5f8ff 100%); min-height:100vh; }
+    main { width:min(980px,calc(100% - 36px)); margin:0 auto; padding:72px 0 44px; }
+    .eyebrow { color:var(--accent); font-size:.78rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    h1 { margin:12px 0 10px; font-size:clamp(2.4rem,6vw,4rem); line-height:1.04; letter-spacing:-.055em; }
+    .intro { max-width:620px; color:var(--muted); font-size:1.08rem; line-height:1.65; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(245px,1fr)); gap:16px; margin-top:36px; }
+    a.card { display:block; padding:22px; border:1px solid #e6e1f0; border-radius:18px; background:rgba(255,255,255,.88); color:inherit; text-decoration:none; box-shadow:0 10px 30px rgba(41,34,63,.045); transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; }
+    a.card:hover,a.card:focus-visible { transform:translateY(-3px); border-color:#b7a5ef; box-shadow:0 16px 35px rgba(75,54,132,.12); outline:none; }
+    .num { color:var(--accent); font-weight:800; font-size:.76rem; letter-spacing:.12em; }
+    h2 { margin:10px 0 6px; font-size:1.12rem; }
+    .card p { color:var(--muted); line-height:1.5; margin:0; font-size:.92rem; }
+    footer { margin-top:48px; border-top:1px solid #e5e1eb; padding-top:18px; color:var(--muted); font-size:.85rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Web Designing Lab · JSS University, Noida</p>
+    <h1>Seven experiments.<br>One place to explore.</h1>
+    <p class="intro">A collection of practical projects by Saksham Rai, covering personal websites, portfolios, interactive interfaces, APIs, responsive layouts, and React.</p>
+    <nav class="grid" aria-label="Web designing lab experiments">
+      <a class="card" href="experiment-1/"><span class="num">EXPERIMENT 01</span><h2>Personal Website with Bootstrap</h2><p>A one-page introduction with navigation, about, and contact sections.</p></a>
+      <a class="card" href="experiment-2/"><span class="num">EXPERIMENT 02</span><h2>Personal Portfolio Website</h2><p>Profile, skills, projects, education, and contact sections.</p></a>
+      <a class="card" href="experiment-3/"><span class="num">EXPERIMENT 03</span><h2>Interactive To-Do List</h2><p>A task manager demonstrating JavaScript DOM interaction.</p></a>
+      <a class="card" href="experiment-4/"><span class="num">EXPERIMENT 04</span><h2>SEO and Accessible Portfolio</h2><p>A semantic page with descriptive metadata and accessible structure.</p></a>
+      <a class="card" href="experiment-5/"><span class="num">EXPERIMENT 05</span><h2>City Weather Application</h2><p>Current conditions fetched from the Open-Meteo APIs.</p></a>
+      <a class="card" href="experiment-6/"><span class="num">EXPERIMENT 06</span><h2>Responsive Technology Blog</h2><p>A Bootstrap blog landing page with responsive article cards.</p></a>
+      <a class="card" href="experiment-7/"><span class="num">EXPERIMENT 07</span><h2>React Notes Application</h2><p>Create, search, pin, update, and delete locally saved notes.</p></a>
+    </nav>
+    <footer>Web Designing Lab · Saksham Rai · Department of Data Science</footer>
+  </main>
+</body>
+</html>
